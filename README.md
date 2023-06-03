@@ -28,7 +28,7 @@
 
 Portfolio de Concepteur Développeur d'Applications
 
-Accessible via https://charlesfouquet.github.io/
+Accessible via https://.github.io/
 
 <h3>Technologies et connaissances mobilisées :</h3>
 
