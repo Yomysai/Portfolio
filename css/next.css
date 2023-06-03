@@ -1,0 +1,22 @@
+body {
+    background: #f5d9d5;
+}
+
+#navLinks { 
+    justify-content: flex-end;
+}
+
+#home, #about, #portfolio, #testimonials {
+    margin: 2em 1em 0 1em;
+    font-size: large;
+}
+
+#brand_name {
+    font-size: 1.75em;
+    font-weight: 500;
+    padding-top: 4vh;
+}
+
+#bavbar-button {
+    align-items: flex-end;
+}
