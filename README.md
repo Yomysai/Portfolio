@@ -28,7 +28,7 @@
 
 Portfolio de Concepteur Développeur d'Applications
 
-Accessible via https://.github.io/
+Accessible via https://https://yomysai.github.io/Portfolio/
 
 <h3>Technologies et connaissances mobilisées :</h3>
 
