@@ -19,10 +19,6 @@
             <img height="32px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg">
             </td>
             <td width="80px" align="center">
-            <span><strong>AOS</strong></span><br>
-            <img height="32px" src="https://i.imgur.com/Auwzk9Y.png">
-            </td>
-            <td width="80px" align="center">
             <span><strong>Ajax</strong></span><br>
             <img height="32px" src="http://claytonorobio.com/wp-content/uploads/2019/01/ajaxIcon.png">
             </td>
