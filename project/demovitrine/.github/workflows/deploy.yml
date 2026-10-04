@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -18,13 +17,15 @@ concurrency:
 
 jobs:
   build:
-    name: Build Portfolio and DémoVitrine
+    name: Build Portfolio + DémoVitrine
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Récupération du dépôt
       - name: Checkout
         uses: actions/checkout@v6
 
+      # 2. Installation de Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -32,19 +33,26 @@ jobs:
           cache: npm
           cache-dependency-path: project/demovitrine/package-lock.json
 
+      # 3. Installation des dépendances React/Vite
       - name: Install DémoVitrine dependencies
         working-directory: project/demovitrine
         run: npm ci
 
+      # 4. Build Vite
       - name: Build DémoVitrine
         working-directory: project/demovitrine
         run: npm run build
 
-      - name: Prepare Pages directory
+      # 5. Préparation du site final
+      - name: Prepare Pages site
         run: |
+          rm -rf _site
           mkdir -p _site
 
-          # Portfolio
+          # ─────────────────────────────
+          # Portfolio principal
+          # ─────────────────────────────
+
           cp index.html _site/
           cp generic.html _site/
           cp elements.html _site/
@@ -57,13 +65,35 @@ jobs:
             cp -r images _site/images
           fi
 
-          # DémoVitrine
-          mkdir -p _site/project/demovitrine
-          cp -r project/demovitrine/dist/. _site/project/demovitrine/
+          if [ -f README.txt ]; then
+            cp README.txt _site/
+          fi
 
+          # ─────────────────────────────
+          # DémoVitrine
+          # ─────────────────────────────
+
+          mkdir -p _site/project/demovitrine
+
+          cp -r project/demovitrine/dist/. \
+            _site/project/demovitrine/
+
+          # ─────────────────────────────
+          # Vérification
+          # ─────────────────────────────
+
+          echo "Contenu de DémoVitrine publié :"
+          find _site/project/demovitrine -maxdepth 2 -type f | sort
+
+          echo ""
+          echo "Index DémoVitrine :"
+          sed -n '1,30p' _site/project/demovitrine/index.html
+
+      # 6. Configuration GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # 7. Création de l'artifact
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
@@ -79,6 +109,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
