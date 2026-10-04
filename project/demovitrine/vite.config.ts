@@ -5,7 +5,7 @@ import { fileURLToPath, URL } from 'node:url';
 // Configuration Vite — voir https://vitejs.dev/config/
 export default defineConfig({
 // DémoVitrine est hébergé dans le sous-dossier du portfolio
-base: '/Portfolio/project/demovitrine/dist/',
+base: '/Portfolio/project/demovitrine/',
 
 plugins: [react()],
 
