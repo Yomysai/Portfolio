@@ -1,9 +1,10 @@
-name: Deploy Portfolio + DémoVitrine
+name: Deploy DémoVitrine to GitHub Pages
 
 on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 permissions:
@@ -13,11 +14,15 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
@@ -26,55 +31,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: lts/*
           cache: npm
-          cache-dependency-path: project/demovitrine/package-lock.json
 
       - name: Install dependencies
-        working-directory: project/demovitrine
         run: npm ci
 
-      - name: Build DémoVitrine
-        working-directory: project/demovitrine
+      - name: Build
         run: npm run build
 
-      - name: Prepare site
-        run: |
-          rm -rf _site
-          mkdir -p _site
-
-          # Portfolio
-          cp index.html _site/
-          cp generic.html _site/
-          cp elements.html _site/
-
-          cp -r assets _site/assets
-          cp -r images _site/images
-
-          # DémoVitrine
-          mkdir -p _site/project/demovitrine
-          cp -r project/demovitrine/dist/. _site/project/demovitrine/
-
-          echo "=== DémoVitrine ==="
-          find _site/project/demovitrine -maxdepth 2 -type f
-
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload dist
         uses: actions/upload-pages-artifact@v4
         with:
-          path: _site
+          path: ./dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
